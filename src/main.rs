@@ -1,5 +1,7 @@
-mod error;
+mod acceptable_error;
+mod sequence_sum;
 
 fn main() {
-    error::acceptable_error();
+    // acceptable_error::acceptable_error();
+   sequence_sum::main();
 }
