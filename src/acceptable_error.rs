@@ -1,3 +1,7 @@
+pub fn main() {
+    acceptable_error();
+}
+
 pub fn acceptable_error() {
     let f = |x: f32| x.powi(2) + x - 1.0;
     let acceptable_error: f32 = 1.0e-10;
