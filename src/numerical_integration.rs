@@ -1,13 +1,18 @@
 pub fn main() {
     let range = Delta {
-        start: 0.1,
-        end: 0.5,
-        steps: 7,
+        start: 0.0,
+        end: 1.0,
+        steps: 1_000_000,
         current: 0,
     };
-    range.for_each(|x| println!("{:?}", x));
+    println!("{:?}", numerical_integration(range,
+        |x| {
+           x.powi(2)
+        })
+    );
 }
 
+#[derive(Clone)]
 pub struct Delta {
     start: f64,
     end: f64,
@@ -35,4 +40,10 @@ impl Iterator for Delta {
 
         Some((current_start, current_mid, current_end))
     }
+}
+
+pub fn numerical_integration<F: Fn(f64) -> f64>(range: Delta, f: F) -> f64 {
+    range.map(|x| {
+        f(x.1) * (x.2 - x.0)
+    }).sum()
 }
