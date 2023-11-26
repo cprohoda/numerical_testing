@@ -47,3 +47,11 @@ pub fn numerical_integration<F: Fn(f64) -> f64>(range: Delta, f: F) -> f64 {
         f(x.1) * (x.2 - x.0)
     }).sum()
 }
+
+pub fn taylor_expansion<F: Fn(f64) -> f64>(f: F, a: f64, step: f64) -> impl Fn(f64) -> f64 {
+    // f(x) = sum_n: 1/(n!) * f^n(a) * (x - a)^n
+    // currently only the first two terms
+    move |x| {
+        f(a) + (f(a+step) - f(a)) * (x - a)
+    }
+}
