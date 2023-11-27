@@ -48,10 +48,16 @@ pub fn numerical_integration<F: Fn(f64) -> f64>(range: Delta, f: F) -> f64 {
     }).sum()
 }
 
-pub fn taylor_expansion<F: Fn(f64) -> f64>(f: F, a: f64, step: f64) -> impl Fn(f64) -> f64 {
+pub fn taylor_expansion<F: Fn(f64) -> f64>(f: F, dx: f64) -> impl Fn(f64, f64) -> f64 {
     // f(x) = sum_n: 1/(n!) * f^n(a) * (x - a)^n
     // currently only the first two terms
-    move |x| {
-        f(a) + (f(a+step) - f(a)) * (x - a)
+    // truncated taylor expansion:
+    // f(x) = sum_N-1_terms + 1/N! * f^N(y) * (x - a)^N
+    // where y is between x and a 
+    move |x, a| {
+        // Centered difference approximations
+        let first_order = (f(a+dx) - f(a-dx)) / (2. * dx);
+        let second_order = (f(a+dx) - 2. * f(a) + f(a-dx)) / (2. * dx.powi(2));
+        f(a) + first_order * (x - a) + 0.5 * second_order * (x - a).powi(2)
     }
 }
