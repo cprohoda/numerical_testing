@@ -48,7 +48,7 @@ pub fn numerical_integration<F: Fn(f64) -> f64>(range: Delta, f: F) -> f64 {
     }).sum()
 }
 
-pub fn taylor_expansion<F: Fn(f64) -> f64>(f: F, dx: f64) -> impl Fn(f64, f64) -> f64 {
+pub fn truncated_taylor_expansion<F: Fn(f64) -> f64>(f: F, dx: f64) -> impl Fn(f64, f64) -> f64 {
     // f(x) = sum_n: 1/(n!) * f^n(a) * (x - a)^n
     // currently only the first two terms
     // truncated taylor expansion:
