@@ -4,6 +4,7 @@ mod numerical_integration;
 mod matrix;
 // mod interpolation;
 mod configuration;
+mod adaptable_mesh;
 
 fn main() {
     // acceptable_error::main();
@@ -11,5 +12,6 @@ fn main() {
     // numerical_integration::main();
     // matrix::main();
     // interpolation::main();
-    configuration::main();
+    // configuration::main();
+    adaptable_mesh::main();
 }
