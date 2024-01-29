@@ -34,15 +34,6 @@ struct MeshNode<T: Default + Copy> {
     value: T,
 }
 
-impl<T: Default + Copy> MeshNode<T> {
-    fn new(point: Vec3) -> Self {
-        Self {
-            point: point,
-            value: T::default(),
-        }
-    }
-}
-
 #[derive(Default, Clone, Copy)]
 struct Vec3 {
     x: f64,
@@ -51,4 +42,8 @@ struct Vec3 {
 }
 
 pub fn main() {
+    let simulation = AdaptableMesh::<100, 100, 100, f64, _>::new(
+        |f| f.powi(2),
+        Vec3 {x: 10.0, y: 10.0, z: 10.0}
+    );
 }
