@@ -28,6 +28,16 @@ impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy + fmt::De
             f: update_function,
         }
     }
+
+    fn update(&mut self) {
+        (*self.mesh).iter_mut().enumerate().for_each(|(z, xy_mesh)| {
+            xy_mesh.iter_mut().enumerate().for_each(|(y, x_mesh)| {
+                x_mesh.iter_mut().enumerate().for_each(|(x, mesh_node)| {
+                    mesh_node.value = (self.f)(mesh_node.value);
+                });
+            });
+        });
+    }
 }
 
 impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy + fmt::Debug, F: Fn(T) -> T> fmt::Debug for AdaptableMesh<X, Y, Z, T, F> {
@@ -52,9 +62,11 @@ struct Vec3 {
 }
 
 pub fn main() {
-    let simulation = AdaptableMesh::<3, 3, 1, f64, _>::new(
+    let mut simulation = AdaptableMesh::<3, 3, 1, f64, _>::new(
         |f| f.powi(2) + 1.0,
         Vec3 {x: 10.0, y: 10.0, z: 10.0},
     );
+    println!("{:?}", simulation);
+    simulation.update();
     println!("{:?}", simulation);
 }
