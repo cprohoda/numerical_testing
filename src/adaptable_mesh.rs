@@ -1,10 +1,12 @@
-struct AdaptableMesh<const X: usize, const Y: usize, const Z: usize, T: Default + Copy, F: Fn(T) -> T> {
+use core::fmt;
+
+struct AdaptableMesh<const X: usize, const Y: usize, const Z: usize, T: Default + Copy + fmt::Debug, F: Fn(T) -> T> {
     mesh: Box<[[[MeshNode<T>; X]; Y]; Z]>,
     dimensions: Vec3,
     f: F,
 }
 
-impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy, F: Fn(T) -> T> AdaptableMesh<X, Y, Z, T, F> {
+impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy + fmt::Debug, F: Fn(T) -> T> AdaptableMesh<X, Y, Z, T, F> {
     fn new(update_function: F, dimensions: Vec3) -> Self {
         let mut mesh = Box::new([[[MeshNode::<T>::default(); X]; Y]; Z]);
 
@@ -28,13 +30,21 @@ impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy, F: Fn(T)
     }
 }
 
-#[derive(Default, Clone, Copy)]
+impl<const X: usize, const Y: usize, const Z: usize, T: Default + Copy + fmt::Debug, F: Fn(T) -> T> fmt::Debug for AdaptableMesh<X, Y, Z, T, F> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("AdaptableMesh")
+         .field("mesh", &self.mesh)
+         .finish()
+    }
+}
+
+#[derive(Debug, Default, Clone, Copy)]
 struct MeshNode<T: Default + Copy> {
     point: Vec3,
     value: T,
 }
 
-#[derive(Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy)]
 struct Vec3 {
     x: f64,
     y: f64,
@@ -42,8 +52,9 @@ struct Vec3 {
 }
 
 pub fn main() {
-    let simulation = AdaptableMesh::<100, 100, 10, f64, _>::new(
-        |f| f.powi(2),
+    let simulation = AdaptableMesh::<3, 3, 1, f64, _>::new(
+        |f| f.powi(2) + 1.0,
         Vec3 {x: 10.0, y: 10.0, z: 10.0},
     );
+    println!("{:?}", simulation);
 }
