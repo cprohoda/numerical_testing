@@ -1,33 +1,58 @@
 use std::mem::{MaybeUninit, uninitialized};
 
 pub fn main() {
-    println!("{:?}", lagrange_polynomial(10.0, [1.0, 2.0, 3.0]));
+    // println!("{:?}", lagrange_polynomial(10.0, [1.0, 2.0, 3.0]));
 }
 
-pub fn lagrange_polynomial<const N: usize, F: Fn(f64) -> f64>(x: f64, l: [F; N]) -> f64 {
-    l.iter().enumerate().map(|(i, l_i)| {
-        l_i(x) * x.powi(i as i32)
-    }).sum()
+// pub fn lagrange_polynomial<const N: usize, F: Fn(f64) -> f64>(x: f64, l: [F; N]) -> f64 {
+//     l.iter().enumerate().map(|(i, l_i)| {
+//         l_i(x) * x.powi(i as i32)
+//     }).sum()
+// }
+
+// pub fn lagrange_elementary_polynomials<const N: usize, F: Fn(f64) -> f64>(x_N: [f64; N]) -> [F; N] {
+//     unsafe {
+//         let mut elementary_polynomials: MaybeUninit<[F; N]> = std::mem::MaybeUninit::uninit();
+
+//         // L_k(x) = Π_[j!=k](x-x_j) / Π_[j!=k](x_k-x_j)
+
+//         elementary_polynomials.assume_init().iter_mut().enumerate().for_each(|(k, L_k)| {
+//             std::ptr::write(L_k, |x| {
+//                 x_N.iter().enumerate().filter(|(i, x)| {
+//                     *i != k
+//                 }).map(|(i, x_n)| {
+//                     unimplemented!("");
+//                     // figure out how to assemble a product operator in a loop
+//                     // maybe macros
+//                 }).product()
+//             });
+//         });
+
+//         elementary_polynomials
+//     }
+// }
+
+pub fn lagrange_elementary_polynomial_three(x_N: [f64; 3], y_N: [f64; 3]) -> impl Fn(f64) -> f64 {
+    move |x| {
+        y_N[0] * (x - x_N[2])/(x_N[0] - x_N[2]) * (x - x_N[1])/(x_N[0] - x_N[1]) +
+        y_N[1] * (x - x_N[0])/(x_N[1] - x_N[0]) * (x - x_N[2])/(x_N[1] - x_N[2]) +
+        y_N[2] * (x - x_N[0])/(x_N[2] - x_N[0]) * (x - x_N[1])/(x_N[2] - x_N[1])
+    }
 }
 
-pub fn lagrange_elementary_polynomials<const N: usize, F: Fn(f64) -> f64>(x_N: [f64; N]) -> [F; N] {
-    unsafe {
-        let mut elementary_polynomials: MaybeUninit<[F; N]> = std::mem::MaybeUninit::uninit();
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-        // L_k(x) = Π_[j!=k](x-x_j) / Π_[j!=k](x_k-x_j)
+    #[test]
+    fn test_lagrange_elementary_polynomial_three() {
+        let x_N = [0.0, 1.0, 2.0];
+        let y_N = [3.2, 3.1, 5.0];
 
-        elementary_polynomials.assume_init().iter_mut().enumerate().for_each(|(k, L_k)| {
-            std::ptr::write(L_k, |x| {
-                x_N.iter().enumerate().filter(|(i, x)| {
-                    *i != k
-                }).map(|(i, x_n)| {
-                    unimplemented!("");
-                    // figure out how to assemble a product operator in a loop
-                    // maybe macros
-                }).product()
-            });
-        });
+        let polynomial = lagrange_elementary_polynomial_three(x_N, y_N);
 
-        elementary_polynomials
+        assert_eq!(polynomial(x_N[0]), y_N[0]);
+        assert_eq!(polynomial(x_N[1]), y_N[1]);
+        assert_eq!(polynomial(x_N[2]), y_N[2]);
     }
 }
