@@ -28,10 +28,18 @@ pub fn interpolation_2d_plot() {
     root_area.fill(&WHITE).unwrap();
 
     let mut chart = ChartBuilder::on(&root_area)
+        .caption("2d Interpolation", ("Arial", 30))
+        .set_label_area_size(LabelAreaPosition::Left, 40)
+        .set_label_area_size(LabelAreaPosition::Bottom, 40)
         .build_cartesian_2d(0.0..10.0, 0.0..10.0)
         .unwrap();
 
-    let polynomial = lagrange_elementary_polynomial_three([0.0, 3.0, 5.0], [3.2, 3.1, 5.0]);
+    chart.configure_mesh().draw().unwrap();
+
+    let polynomial = lagrange_elementary_polynomial_three(
+        [0.0, 3.0, 5.0],
+        [3.2, 3.1, 5.0],
+    );
 
     chart.draw_series(LineSeries::new(
         (0..100).map(|x| x as f64 / 10.0).map(|x| (x, polynomial(x))),
