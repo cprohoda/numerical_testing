@@ -5,13 +5,15 @@ mod matrix;
 mod interpolation;
 mod configuration;
 mod adaptable_mesh;
+mod plots;
 
 fn main() {
     // acceptable_error::main();
     // sequence_sum::main();
     // numerical_integration::main();
     // matrix::main();
-    interpolation::main();
+    // interpolation::main();
     // configuration::main();
     // adaptable_mesh::main();
+    plots::main();
 }
