@@ -1,6 +1,10 @@
 use plotters::prelude::*;
 
 pub fn main() {
+    basic_plot();
+}
+
+pub fn basic_plot() {
     let root_area = BitMapBackend::new("target/test.png", (1000, 1000)).into_drawing_area();
 
     root_area.fill(&WHITE).unwrap();
