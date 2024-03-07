@@ -1,7 +1,13 @@
-use std::mem::{MaybeUninit, uninitialized};
+use std::{mem::{uninitialized, MaybeUninit}, os::unix::raw::pid_t};
 
 pub fn main() {
-    // println!("{:?}", lagrange_polynomial(10.0, [1.0, 2.0, 3.0]));
+    let x_n = [0.0, 1.0, 2.0];
+    let y_n = [0.0, 1.0, 2.0];
+    let z_n = [[0.0, 1.0, 3.0], [2.0, 4.0, 8.0], [5.0, 10.0, 16.0]];
+
+    let polynomial = lagrange_interpolating_polynomial_3d(x_n, y_n, z_n);
+
+    (0..20).for_each(|x| println!("{:?}", polynomial((x as f64)/10.0, 2.0)));
 }
 
 // pub fn lagrange_polynomial<const N: usize, F: Fn(f64) -> f64>(x: f64, l: [F; N]) -> f64 {
