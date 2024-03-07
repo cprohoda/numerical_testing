@@ -61,6 +61,21 @@ pub fn lagrange_interpolating_polynomial_3d(x_n: [f64; 3], y_n: [f64; 3], z_n: [
     }
 }
 
+pub fn cubic_spline_interpolation(x_n: [f64; 3], y_n: [f64; 3]) -> impl Fn(f64) -> f64 {
+    move |x| {
+        let delta_x = x_n[2] - x_n[0];
+        let delta_y = y_n[2] - y_n[0];
+        let m = delta_y / delta_x;
+        let t = |x| (x - x_n[0])/(x_n[1] - x_n[0]);
+        let t_bar = |x| 1.0 - t(x);
+
+        let a = ????;
+        let b = ????;
+
+        t(x) * y_n[0] + t_bar(x) * y_n[1] + t(x) * t_bar(x) * (a * t(x) + b * t_bar(x))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
