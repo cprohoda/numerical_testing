@@ -72,21 +72,21 @@ pub fn interpolation_3d_plot() {
     );
 
     chart.draw_series(
-        (0..250)
-            .map(|x| repeat(x).zip(0..250))
+        (0..25)
+            .map(|x| repeat(x).zip(0..25))
             .flatten()
             .map(|(x, y)| {
-                let x_current = x as f64;
-                let x_next = (x + 1)  as f64;
-                let y_current = y as f64;
-                let y_next = (y + 1) as f64;
+                let x_current = x as f64 / 10.0;
+                let x_next = (x + 1)  as f64 / 10.0;
+                let y_current = y as f64 / 10.0;
+                let y_next = (y + 1) as f64 / 10.0;
 
                 Polygon::new(
                     vec![
                         (x_current, y_current, polynomial(x_current,y_current)),
                         (x_next, y_current, polynomial(x_next, y_current)),
-                        (x_current, y_next, polynomial(x_current, y_next)),
                         (x_next, y_next, polynomial(x_next, y_next)),
+                        (x_current, y_next, polynomial(x_current, y_next)),
                     ],
                     &BLACK.mix(0.3),
                 )
