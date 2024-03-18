@@ -1,5 +1,8 @@
 use std::{mem::{uninitialized, MaybeUninit}, os::unix::raw::pid_t};
 
+use ndarray::prelude::*;
+use ndarray_linalg::*;
+
 pub fn main() {
     let x_n = [0.0, 1.0, 2.0];
     let y_n = [0.0, 1.0, 2.0];
@@ -62,17 +65,16 @@ pub fn lagrange_interpolating_polynomial_3d(x_n: [f64; 3], y_n: [f64; 3], z_n: [
 }
 
 pub fn cubic_spline_interpolation(x_n: [f64; 3], y_n: [f64; 3]) -> impl Fn(f64) -> f64 {
+    let h_i = 0.0; // h_i = x_ip1 - x_i;
+    let n_i = 0.0; // n_i = y_ip1 - x_i;
+    let a = vec![0.0]; // a_i = (b_ip1-b_i)/(3 * h_i)
+    let b = vec![0.0]; // (n_ip1/h_ip1) - (n_i/h_i) = h_i*b_i/3 + 2*(h_ip1+h_i)*b_ip1/3 + h_i*b_ip2/3
+    let c = 0.0; // n_i = a_i*h_i^3 + b_i*h_i^2 + c_i*h_i
+    let d = 0.0; // d_i = y_i
+
+    let g = 0.0; // a_i*(x-x_i)^3 + b_i*(x-x_i)^2 + c_i*(x-x_i) + d_i 
     move |x| {
-        let delta_x = x_n[2] - x_n[0];
-        let delta_y = y_n[2] - y_n[0];
-        let m = delta_y / delta_x;
-        let t = |x| (x - x_n[0])/(x_n[1] - x_n[0]);
-        let t_bar = |x| 1.0 - t(x);
-
-        let a = ????;
-        let b = ????;
-
-        t(x) * y_n[0] + t_bar(x) * y_n[1] + t(x) * t_bar(x) * (a * t(x) + b * t_bar(x))
+        x
     }
 }
 
