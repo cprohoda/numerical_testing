@@ -1,7 +1,6 @@
 use std::{error::Error};
 
-use ndarray::prelude::*;
-use ndarray_linalg::*;
+use nalgebra::DMatrix;
 
 pub fn main() {
     let x_n = [0.0, 1.0, 2.0];
@@ -111,5 +110,23 @@ mod tests {
         assert_eq!(polynomial(x_n[0], y_n[2]), z_n[0][2]);
         assert_eq!(polynomial(x_n[1], y_n[2]), z_n[1][2]);
         assert_eq!(polynomial(x_n[2], y_n[2]), z_n[2][2]);
+    }
+
+    #[test]
+    fn test_ndarray_solver() {
+        let a = DMatrix::<f64>::from_row_slice(2, 3, &[
+            1.0, 1.0, 0.0,
+            0.0, 1.0, 1.0,
+        ]);
+
+        let b = DMatrix::<f64>::from_row_slice(2, 1, &[
+            1.0,
+            1.5,
+        ]);
+
+        let decomp = a.lu();
+        let x = decomp.solve(&b).expect("failed");
+
+        println!("{:?}", x);
     }
 }
