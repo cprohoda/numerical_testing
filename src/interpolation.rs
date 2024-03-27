@@ -1,4 +1,4 @@
-use std::{mem::{uninitialized, MaybeUninit}, os::unix::raw::pid_t};
+use std::{error::Error};
 
 use ndarray::prelude::*;
 use ndarray_linalg::*;
@@ -64,7 +64,7 @@ pub fn lagrange_interpolating_polynomial_3d(x_n: [f64; 3], y_n: [f64; 3], z_n: [
     }
 }
 
-pub fn cubic_spline_interpolation(x_n: [f64; 3], y_n: [f64; 3]) -> impl Fn(f64) -> f64 {
+pub fn cubic_spline_interpolation(x_n: Vec<f64>, y_n: Vec<f64>) -> Result<Vec<impl Fn(f64) -> f64>, Box<dyn Error>> {
     let h_i = 0.0; // h_i = x_ip1 - x_i;
     let n_i = 0.0; // n_i = y_ip1 - x_i;
     let a = vec![0.0]; // a_i = (b_ip1-b_i)/(3 * h_i)
@@ -73,9 +73,9 @@ pub fn cubic_spline_interpolation(x_n: [f64; 3], y_n: [f64; 3]) -> impl Fn(f64) 
     let d = 0.0; // d_i = y_i
 
     let g = 0.0; // a_i*(x-x_i)^3 + b_i*(x-x_i)^2 + c_i*(x-x_i) + d_i 
-    move |x| {
+    Ok(vec![move |x| {
         x
-    }
+    }])
 }
 
 #[cfg(test)]
