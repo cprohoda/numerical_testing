@@ -113,20 +113,22 @@ mod tests {
     }
 
     #[test]
-    fn test_ndarray_solver() {
-        let a = DMatrix::<f64>::from_row_slice(2, 3, &[
+    fn test_nalgebra_solver() {
+        let a = DMatrix::<f64>::from_row_slice(3, 3, &[
             1.0, 1.0, 0.0,
             0.0, 1.0, 1.0,
+            1.0, 0.0, 1.0,
         ]);
 
-        let b = DMatrix::<f64>::from_row_slice(2, 1, &[
-            1.0,
+        let b = DMatrix::<f64>::from_row_slice(3, 1, &[
+            3.0,
             1.5,
+            0.5,
         ]);
 
         let decomp = a.lu();
         let x = decomp.solve(&b).expect("failed");
 
-        println!("{:?}", x);
+        assert_eq!(x, DMatrix::from_row_slice(3, 1, &[1.0, 2.0, -0.5]));
     }
 }
