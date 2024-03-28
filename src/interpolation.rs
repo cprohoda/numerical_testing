@@ -67,6 +67,12 @@ pub fn cubic_spline_interpolation(x_n: Vec<f64>, y_n: Vec<f64>) -> Result<Vec<im
     let h_i = 0.0; // h_i = x_ip1 - x_i;
     let n_i = 0.0; // n_i = y_ip1 - x_i;
     let a = vec![0.0]; // a_i = (b_ip1-b_i)/(3 * h_i)
+    // a_0 = a_1
+    // (b_1-b_0)/(3 * h_0) = (b_2-b_1)/(3 * h_1)
+    // (b_1-b_0)*(3 * h_1) = (b_2-b_1)*(3 * h_0)
+    //                   0 = (b_2-b_1)*(3 * h_0) - (b_1-b_0)*(3 * h_1)
+    //                   0 = b_2 * h_0 - b_1 * h_0 - b_1 * h_1 + b_0 * h_1
+    //                   0 = b_2 * h_0 - (h_0 + h_1) * b_1 + b_0 * h_1
     let b = vec![0.0]; // (n_ip1/h_ip1) - (n_i/h_i) = h_i*b_i/3 + 2*(h_ip1+h_i)*b_ip1/3 + h_i*b_ip2/3
     let c = 0.0; // n_i = a_i*h_i^3 + b_i*h_i^2 + c_i*h_i
     let d = 0.0; // d_i = y_i
