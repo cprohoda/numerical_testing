@@ -6,6 +6,7 @@ mod interpolation;
 mod configuration;
 mod adaptable_mesh;
 mod plots;
+mod phase_space;
 
 fn main() {
     // acceptable_error::main();
@@ -15,5 +16,6 @@ fn main() {
     // interpolation::main();
     // configuration::main();
     // adaptable_mesh::main();
-    plots::main();
+    // plots::main();
+    phase_space::main();
 }
