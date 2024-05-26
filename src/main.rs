@@ -7,6 +7,7 @@ mod configuration;
 mod adaptable_mesh;
 mod plots;
 mod phase_space;
+mod fft;
 
 fn main() {
     // acceptable_error::main();
@@ -17,5 +18,6 @@ fn main() {
     // configuration::main();
     // adaptable_mesh::main();
     // plots::main();
-    phase_space::main();
+    // phase_space::main();
+    fft::main();
 }
