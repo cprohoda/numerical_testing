@@ -32,7 +32,7 @@ impl Mul for Complex {
 }
 
 pub fn main() {
-    dft2();
+    println!("dft2([1.0, 3.0]): {:?}", dft2([1.0, 3.0]));
 }
 
 pub fn dft2(signal: [f64; 2]) -> [f64; 2] {
