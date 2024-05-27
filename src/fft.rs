@@ -2,20 +2,13 @@ use std::ops::{Add, Mul, Sub};
 
 // Only for signed numbers, e.g. floats and ints
 // TODO make generic over those types
-#[derive(Debug)]
-struct Complex {
+#[derive(Debug, Clone, Copy)]
+pub struct Complex {
     r: f64,
     i: f64,
 }
 
 impl Complex {
-    fn new(r: f64, i: f64) -> Self {
-        Self {
-            r,
-            i,
-        }
-    }
-
     fn r(r: f64) -> Self {
         Self {
             r,
@@ -84,7 +77,7 @@ pub fn dft2(signal: [f64; 2]) -> [f64; 2] {
 
 pub fn dft4(signal: [Complex; 4]) -> [Complex; 4] {
     let a = signal;
-    let i = Complex{ r: 0.0, i: 1.0 };
+    let i = Complex::i(1.0);
 
     [
         a[0] + a[1] + a[2] + a[3],
@@ -92,8 +85,4 @@ pub fn dft4(signal: [Complex; 4]) -> [Complex; 4] {
         a[0] - a[1] + a[2] - a[3],
         a[0] + i * a[1] - a[2] - i * a[3],
     ]
-}
-
-pub fn fft() {
-    
 }
