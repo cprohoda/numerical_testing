@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul};
+use std::ops::{Add, Mul, Sub};
 
 // Only for signed numbers, e.g. floats and ints
 // TODO make generic over those types
@@ -15,6 +15,17 @@ impl Add for Complex {
         Self {
             r: self.r + rhs.r,
             i: self.i + rhs.i,
+        }
+    }
+}
+
+impl Sub for Complex {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self {
+        Self {
+            r: self.r - rhs.r,
+            i: self.i - rhs.i,
         }
     }
 }
