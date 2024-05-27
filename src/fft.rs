@@ -1,5 +1,7 @@
 use std::ops::{Add, Mul};
 
+use nalgebra::{DMatrix, Matrix};
+
 // Only for signed numbers, e.g. floats and ints
 // TODO make generic over those types
 struct Complex {
@@ -33,8 +35,9 @@ pub fn main() {
     dft2();
 }
 
-pub fn dft2() {
-
+pub fn dft2(signal: [f64; 2]) -> [f64; 2] {
+    let a = signal;
+    [a[0] + a[1], a[0] - a[1]]
 }
 
 pub fn fft() {
