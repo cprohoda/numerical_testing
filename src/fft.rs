@@ -8,6 +8,29 @@ struct Complex {
     i: f64,
 }
 
+impl Complex {
+    fn new(r: f64, i: f64) -> Self {
+        Self {
+            r,
+            i,
+        }
+    }
+
+    fn r(r: f64) -> Self {
+        Self {
+            r,
+            i: 0.0,
+        }
+    }
+
+    fn i(i: f64) -> Self {
+        Self {
+            r: 0.0,
+            i,
+        }
+    }
+}
+
 impl Add for Complex {
     type Output = Self;
 
@@ -45,7 +68,12 @@ pub fn main() {
     println!("dft2([1.0, 3.0]): {:?}", dft2([1.0, 3.0]));
     println!
         ("dft4([1.0, 0.0, 3.0, 0.0]): {:?}",
-        dft4([1.0, 0.0, 3.0, 0.0]),
+        dft4([
+            Complex::r(1.0),
+            Complex::r(0.0),
+            Complex::r(3.0),
+            Complex::r(0.0),
+        ]),
     );
 }
 
