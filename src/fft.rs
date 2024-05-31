@@ -81,7 +81,7 @@ pub fn dft4(signal: [Complex; 4]) -> [Complex; 4] {
 
     [
         a[0] + a[1] + a[2] + a[3],
-        a[0] - i * a[1] - a[2] + a[3],
+        a[0] - i * a[1] - a[2] + i * a[3],
         a[0] - a[1] + a[2] - a[3],
         a[0] + i * a[1] - a[2] - i * a[3],
     ]
