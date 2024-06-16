@@ -1,4 +1,4 @@
-use std::ops::{Add, Div, Mul, Neg, Sub};
+use std::{f64::consts::PI, iter::Sum, ops::{Add, Div, Mul, Neg, Sub}};
 
 // Only for signed numbers, e.g. floats and ints
 // TODO make generic over those types
@@ -22,6 +22,15 @@ impl Complex {
             i,
         }
     }
+
+    fn exp(self) -> Self {
+        let factor = self.r.exp();
+
+        Self {
+            r: factor * self.i.cos(),
+            i: factor * self.i.sin(),
+        }
+    }
 }
 
 impl Add for Complex {
@@ -32,6 +41,17 @@ impl Add for Complex {
             r: self.r + rhs.r,
             i: self.i + rhs.i,
         }
+    }
+}
+
+impl Sum for Complex {
+    fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
+        iter.fold(Self {r: 0.0, i: 0.0}, |acc, curr| {
+            Self {
+                r: acc.r + curr.r,
+                i: acc.i + curr.i,
+            }
+        })
     }
 }
 
@@ -102,6 +122,15 @@ pub fn main() {
             Complex::r(0.0),
         ]),
     );
+    println!
+        ("dft([1.0, 0.0, 3.0, 0.0]): {:?}",
+        dft::<4>([
+            Complex::r(1.0),
+            Complex::r(0.0),
+            Complex::r(3.0),
+            Complex::r(0.0),
+        ]),
+    );
 }
 
 pub fn dft2(signal: [f64; 2]) -> [f64; 2] {
@@ -119,4 +148,15 @@ pub fn dft4(signal: [Complex; 4]) -> [Complex; 4] {
         a[0] - a[1] + a[2] - a[3],
         a[0] + i * a[1] - a[2] - i * a[3],
     ]
+}
+
+pub fn dft<const N: usize>(signal: [Complex; N]) -> [Complex; N] {
+    let i = Complex::i(1.0);
+    let w = -i * 2.0 * PI / (N as f64);
+
+    core::array::from_fn(|k| {
+        (0..N).map(|n| {
+            (w * (n as f64) * (k as f64)).exp() * signal[n]
+        }).sum()
+    })
 }
