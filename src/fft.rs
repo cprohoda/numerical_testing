@@ -50,9 +50,10 @@ impl Mul for Complex {
     type Output = Self;
 
     fn mul(self, rhs: Self) -> Self {
+        // (a + ib) * (c + id) = ac + iad + ibc - bd
         Self {
-            r: self.r * rhs.r,
-            i: -self.i * rhs.i,
+            r: self.r * rhs.r - self.i * rhs.i,
+            i: self.r * rhs.i + self.i * rhs.r,
         }
     }
 }
@@ -62,8 +63,8 @@ impl Mul<f64> for Complex {
 
     fn mul(self, rhs: f64) -> Self {
         Self {
-            r: self.r / rhs,
-            i: self.i / rhs,
+            r: self.r * rhs,
+            i: self.i * rhs,
         }
     }
 }
