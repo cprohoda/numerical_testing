@@ -1,4 +1,4 @@
-use std::ops::{Add, Mul, Sub};
+use std::ops::{Add, Div, Mul, Neg, Sub};
 
 // Only for signed numbers, e.g. floats and ints
 // TODO make generic over those types
@@ -53,6 +53,39 @@ impl Mul for Complex {
         Self {
             r: self.r * rhs.r,
             i: -self.i * rhs.i,
+        }
+    }
+}
+
+impl Mul<f64> for Complex {
+    type Output = Self;
+
+    fn mul(self, rhs: f64) -> Self {
+        Self {
+            r: self.r / rhs,
+            i: self.i / rhs,
+        }
+    }
+}
+
+impl Neg for Complex {
+    type Output = Self;
+
+    fn neg(self) -> Self::Output {
+        Self {
+            r: -self.r,
+            i: -self.i,
+        }
+    }
+}
+
+impl Div<f64> for Complex {
+    type Output = Self;
+
+    fn div(self, rhs: f64) -> Self::Output {
+        Self {
+            r: self.r / rhs,
+            i: self.i / rhs,
         }
     }
 }
