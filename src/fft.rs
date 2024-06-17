@@ -172,6 +172,21 @@ pub fn dft<const N: usize>(signal: [Complex; N]) -> [Complex; N] {
 
 pub fn fft4(signal: [Complex; 4]) -> [Complex; 4] {
     let i = Complex::i(1.0);
+    let a0pa2 = signal[0] + signal[2];
+    let a0ma2 = signal[0] - signal[2];
+    let a1pa3 = signal[1] + signal[3];
+    let a1ma3 = signal[1] - signal[3];
+
+    [
+        a0pa2 + a1pa3,
+        a0ma2 - i * a1ma3,
+        a0pa2 - a1pa3,
+        a0ma2 + i * a1ma3,
+    ]
+}
+
+pub fn fft<const N: usize>(signal: [Complex; N]) -> [Complex; N] {
+    let i = Complex::i(1.0);
 
     let subexp: [Complex; 4] = core::array::from_fn(|n| {
         let b = (n as f64 / 2.0).floor() as usize;
