@@ -131,6 +131,15 @@ pub fn main() {
             Complex::r(0.0),
         ]),
     );
+    println!
+        ("fft4([1.0, 0.0, 3.0, 0.0]): {:?}",
+        fft4([
+            Complex::r(1.0),
+            Complex::r(0.0),
+            Complex::r(3.0),
+            Complex::r(0.0),
+        ]),
+    );
 }
 
 pub fn dft2(signal: [f64; 2]) -> [f64; 2] {
@@ -158,5 +167,20 @@ pub fn dft<const N: usize>(signal: [Complex; N]) -> [Complex; N] {
         (0..N).map(|n| {
             (w * (n as f64) * (k as f64)).exp() * signal[n]
         }).sum()
+    })
+}
+
+pub fn fft4(signal: [Complex; 4]) -> [Complex; 4] {
+    let i = Complex::i(1.0);
+
+    let subexp: [Complex; 4] = core::array::from_fn(|n| {
+        let b = (n as f64 / 2.0).floor() as usize;
+        let sign = -((n % 2) as f64 - 1.0);
+        signal[b] + (signal[b+2] * sign)
+    });
+
+    core::array::from_fn(|n| {
+        let joiner = (0..n).fold(Complex::r(1.0), |curr, _| curr * -i);
+        subexp[n % 2] + joiner * subexp[n / 2 + 2]
     })
 }
